@@ -94,9 +94,17 @@ public class WordCount {
         Configuration conf = new Configuration();
         String hdfs = "hdfs://localhost:9000";
         conf.set("fs.default.name", hdfs);
+        conf.addResource(new Path("file:///home/su/hadoop-2.7.6/etc/hadoop/core-site.xml"));
+        conf.addResource(new Path("file:///home/su/hadoop-2.7.6/etc/hadoop/hdfs-site.xml"));
+        conf.addResource(new Path("file:///home/su/hadoop-2.7.6/etc/hadoop/mapred-site.xml"));
+        conf.addResource(new Path("file:///home/su/hadoop-2.7.6/etc/hadoop/yarn-site.xml"));
+
+        // Hadoop客户端提交作业时java.lang.ClassNotFoundException
+        // 1.将MapReduce程序打包成一个jar文件，放到项目的根目录下。
+        // 2.添加代码JobConf conf=new JobConf();conf.setJar("xxxx.jar");或者job对象的job.setJar("xxxx.jar");
+
         Job job = Job.getInstance(conf, "word count");
-
-
+        job.setJar(System.getProperty("user.dir") + "/target/hadoop-tset-1.0-SNAPSHOT.jar");
         // String inputFileOnHDFS = "hdfs://localhost:9000/user/su/test"; // 目录或文件
         String inputFileOnHDFS = "hdfs://localhost:9000/home/su/test"; // 目录或文件
         job.addCacheFile(new Path(inputFileOnHDFS).toUri());
