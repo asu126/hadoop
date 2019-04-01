@@ -5,8 +5,13 @@ import java.util.Map;
 
 public class Test1 {
     public static void main(String[] args) {
-        // TODO Auto-generated method stub
         System.out.println(System.getProperty("user.dir"));
+        System.out.println(Integer.MIN_VALUE); // 32 bit
+        System.out.println(Integer.MAX_VALUE); // 32 bit
+        System.out.println(Long.MIN_VALUE); // 64 bit
+        System.out.println(Long.MAX_VALUE); // 64 bit
+        System.out.println(Double.MIN_VALUE); // 64 bit
+        System.out.println(Double.MAX_VALUE); // 64 bit
 
         Map<String, String> map = System.getenv();
         for (Iterator<String> itr = map.keySet().iterator(); itr.hasNext(); ) {

@@ -38,9 +38,9 @@ public class WordCount {
                     URI[] localCacheFiles = context.getCacheFiles();
                     // BufferedReader reader = new BufferedReader(new FileReader(localCacheFiles[0].getPath()));
                     FileReader reader = new FileReader(localCacheFiles[0].getPath());
-                    BufferedReader breader = new BufferedReader(reader);
+                    BufferedReader bufferReader = new BufferedReader(reader);
                     String line = null;
-                    while ((line = breader.readLine()) != null) {
+                    while ((line = bufferReader.readLine()) != null) {
                         //TODO:读取每行内容进行相关的操作
                         StringTokenizer tokenizer = new StringTokenizer(line);
                         while (tokenizer.hasMoreTokens()) {
@@ -48,7 +48,7 @@ public class WordCount {
                         }
                         System.out.println(line);
                     }
-                    breader.close();
+                    bufferReader.close();
                     reader.close();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -111,6 +111,7 @@ public class WordCount {
 
         job.setJarByClass(WordCount.class);
         job.setMapperClass(TokenizerMapper.class);
+        // combiner: 组合
         job.setCombinerClass(IntSumReducer.class);
         job.setReducerClass(IntSumReducer.class);
         job.setOutputKeyClass(Text.class);
@@ -118,6 +119,7 @@ public class WordCount {
         // FileInputFormat.addInputPath(job, new Path(args[0]));
         // FileOutputFormat.setOutputPath(job, new Path(args[1]));
         FileInputFormat.addInputPath(job, new Path("/user/su/input"));
+        // 输出文件不能重复，防止数据覆盖
         FileOutputFormat.setOutputPath(job, new Path("/user/su/output-008"));
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
